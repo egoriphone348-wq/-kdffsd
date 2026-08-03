@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ПроКопченый"
+description = "Сайт-визитка для коптильни #ПроКопченый. Натуральное копчение по старинному рецепту, с. Кафтанчиково. Обложка с анимированной коптильней и дымом, бежевый старорусский стиль, каталог продукции с ценами, контакты."
+version = "1.0.0"
+id = "artifacts/prokopcheny"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20423
+
+[services.development]
+run = "pnpm --filter @workspace/prokopcheny run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/prokopcheny", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/prokopcheny/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20423"
+BASE_PATH = "/"
