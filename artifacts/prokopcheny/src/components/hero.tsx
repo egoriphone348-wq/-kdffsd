@@ -1,18 +1,46 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, Clock } from "lucide-react";
 import heroBg from "@assets/generated_images/hero-bg.jpg";
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Track scroll progress within the hero section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Background moves up at 40% of scroll speed → parallax depth
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  // Subtle fade as you scroll away
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.6, 0.85]);
+  // Content drifts up faster than scroll → "pulls away" feeling
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-black flex flex-col items-center justify-center">
-      {/* Background Image with Slow Zoom */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative h-[100dvh] w-full overflow-hidden bg-black flex flex-col items-center justify-center"
+    >
+      {/* Background Image — moves slower than scroll (parallax) */}
+      <motion.div
+        className="absolute inset-0 z-0 will-change-transform"
+        style={{ y: bgY }}
+      >
         <div
-          className="w-full h-full bg-cover bg-center animate-slow-zoom"
+          className="w-full h-[130%] -mt-[15%] bg-cover bg-center animate-slow-zoom"
           style={{ backgroundImage: `url(${heroBg})` }}
         />
-        <div className="absolute inset-0 bg-black/60 z-10" />
-      </div>
+      </motion.div>
+
+      {/* Dark overlay — deepens as user scrolls */}
+      <motion.div
+        className="absolute inset-0 bg-black z-10"
+        style={{ opacity: overlayOpacity }}
+      />
 
       {/* Smoke particles */}
       <div className="absolute inset-0 z-10 pointer-events-none">
@@ -23,8 +51,11 @@ export function Hero() {
         <div className="smoke-particle" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto h-full mt-10">
+      {/* Content — drifts up and fades out on scroll */}
+      <motion.div
+        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto h-full mt-10 will-change-transform"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,9 +84,9 @@ export function Hero() {
           <span className="font-serif italic text-lg sm:text-xl md:text-2xl">Традиции вкуса</span>
           <div className="h-px w-8 sm:w-12 bg-current" />
         </motion.div>
-      </div>
+      </motion.div>
 
-      {/* Contact Info Bar */}
+      {/* Contact Info Bar — pinned to bottom, fades in late */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
