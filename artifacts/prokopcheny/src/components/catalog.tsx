@@ -3,13 +3,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const CATEGORIES = [
-  { id: "meat", name: "Мясо", icon: "🥓" },
-  { id: "poultry", name: "Птица", icon: "🍗" },
-  { id: "beef", name: "Говядина", icon: "🥩" },
-  { id: "shashlik", name: "Шашлык", icon: "🔥" },
-  { id: "hot-fish", name: "Рыба г/к", icon: "🐟" },
-  { id: "cold-fish", name: "Рыба х/к", icon: "❄️" },
-  { id: "stew", name: "Тушёнка", icon: "🫙" },
+  { id: "meat",      name: "Мясо" },
+  { id: "poultry",   name: "Птица" },
+  { id: "beef",      name: "Говядина" },
+  { id: "shashlik",  name: "Шашлык" },
+  { id: "hot-fish",  name: "Рыба г/к" },
+  { id: "cold-fish", name: "Рыба х/к" },
+  { id: "stew",      name: "Тушёнка" },
 ];
 
 interface Product {
@@ -108,7 +108,7 @@ export function Catalog() {
         className={`max-w-6xl mx-auto fade-in-section ${isIntersecting ? "is-visible" : ""}`}
       >
         <div className="text-center mb-12">
-          <h2 className="font-['Ruslan_Display'] text-5xl md:text-6xl text-primary mb-4 uppercase">
+          <h2 className="font-['Yeseva_One'] text-5xl md:text-6xl text-primary mb-4 uppercase">
             Каталог Продукции
           </h2>
           <div className="ornament-divider">
@@ -125,9 +125,8 @@ export function Catalog() {
               <TabsTrigger
                 key={cat.id}
                 value={cat.id}
-                className="font-serif text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border border-border/50 rounded-none px-6 py-3 transition-colors"
+                className="font-['Yeseva_One'] text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border border-border/50 rounded-none px-6 py-3 transition-colors uppercase tracking-wide"
               >
-                <span className="mr-2">{cat.icon}</span>
                 {cat.name}
               </TabsTrigger>
             ))}

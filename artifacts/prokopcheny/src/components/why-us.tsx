@@ -20,7 +20,7 @@ export function WhyUs() {
         <span className="font-sans tracking-[0.3em] uppercase text-accent text-sm md:text-base font-bold mb-4 block">
           Наши Принципы
         </span>
-        <h2 className="font-['Ruslan_Display'] text-5xl md:text-6xl mb-8 leading-tight drop-shadow-xl">
+        <h2 className="font-['Yeseva_One'] text-5xl md:text-6xl mb-8 leading-tight drop-shadow-xl">
           Качество. Вкус. Традиции.
         </h2>
         
@@ -28,8 +28,8 @@ export function WhyUs() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="p-6 border border-[#E8D9C5]/10 bg-black/40 backdrop-blur-sm">
-            <div className="text-4xl mb-4">🏆</div>
-            <h3 className="font-serif text-xl font-bold mb-3 uppercase">
+            <div className="font-['Yeseva_One'] text-4xl text-[#E8D9C5]/60 mb-4 leading-none">I</div>
+            <h3 className="font-['Yeseva_One'] text-xl mb-3 uppercase tracking-wide">
               100% Натурально
             </h3>
             <p className="font-sans text-sm opacity-70">
@@ -39,8 +39,8 @@ export function WhyUs() {
           </div>
 
           <div className="p-6 border border-[#E8D9C5]/10 bg-black/40 backdrop-blur-sm">
-            <div className="text-4xl mb-4">🔥</div>
-            <h3 className="font-serif text-xl font-bold mb-3 uppercase">
+            <div className="font-['Yeseva_One'] text-4xl text-[#E8D9C5]/60 mb-4 leading-none">II</div>
+            <h3 className="font-['Yeseva_One'] text-xl mb-3 uppercase tracking-wide">
               Осиновая щепа
             </h3>
             <p className="font-sans text-sm opacity-70">
@@ -50,8 +50,8 @@ export function WhyUs() {
           </div>
 
           <div className="p-6 border border-[#E8D9C5]/10 bg-black/40 backdrop-blur-sm">
-            <div className="text-4xl mb-4">⭐</div>
-            <h3 className="font-serif text-xl font-bold mb-3 uppercase">
+            <div className="font-['Yeseva_One'] text-4xl text-[#E8D9C5]/60 mb-4 leading-none">III</div>
+            <h3 className="font-['Yeseva_One'] text-xl mb-3 uppercase tracking-wide">
               ГОСТ Качество
             </h3>
             <p className="font-sans text-sm opacity-70">

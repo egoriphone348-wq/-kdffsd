@@ -1,3 +1,4 @@
+import React from "react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { Leaf, Utensils, Flame, ShieldCheck } from "lucide-react";
 import poultryBg from "@assets/generated_images/poultry.jpg";
@@ -25,7 +26,7 @@ export function About() {
             </div>
           </div>
           
-          <h2 className="font-['Ruslan_Display'] text-5xl md:text-6xl text-primary mb-4">
+          <h2 className="font-['Yeseva_One'] text-5xl md:text-6xl text-primary mb-4">
             Собственное Производство
           </h2>
           <div className="ornament-divider">
@@ -40,22 +41,22 @@ export function About() {
           {/* Features */}
           <div className="space-y-10">
             <Feature 
-              icon="🌿"
+              Icon={Leaf}
               title="Работаем с натуральным сырьём"
               desc="Только отборные продукты и понятные ингредиенты. Без усилителей вкуса и искусственных добавок."
             />
             <Feature 
-              icon="🧂"
+              Icon={Utensils}
               title="Авторский деликатный посол"
               desc="Собственная вкусовая подача и бережный подход к продукту, раскрывающий его естественный вкус."
             />
             <Feature 
-              icon="♨️"
+              Icon={Flame}
               title="Традиционное копчение"
               desc="Натуральная щепа, ремесленные приёмы и богатый аромат. Коптим старинными методами."
             />
             <Feature 
-              icon="🛡️"
+              Icon={ShieldCheck}
               title="Контроль на каждом этапе"
               desc="Строгий контроль качества от сырья до готового деликатеса, который станет украшением стола."
             />
@@ -78,14 +79,14 @@ export function About() {
   );
 }
 
-function Feature({ icon, title, desc }: { icon: string, title: string, desc: string }) {
+function Feature({ Icon, title, desc }: { Icon: React.ElementType, title: string, desc: string }) {
   return (
     <div className="flex gap-6 items-start">
-      <div className="flex-shrink-0 w-12 h-12 border-2 border-accent rounded-full flex items-center justify-center text-2xl text-accent">
-        {icon}
+      <div className="flex-shrink-0 w-12 h-12 border-2 border-accent flex items-center justify-center text-accent">
+        <Icon size={22} strokeWidth={1.5} />
       </div>
       <div>
-        <h3 className="font-serif text-xl font-bold text-primary mb-2 uppercase tracking-wide">
+        <h3 className="font-['Yeseva_One'] text-xl text-primary mb-2 uppercase tracking-wide">
           {title}
         </h3>
         <p className="font-sans text-muted-foreground leading-relaxed">
