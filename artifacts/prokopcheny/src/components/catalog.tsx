@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { ShoppingBasket, Check } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useCart } from "@/context/cart";
 
 const CATEGORIES = [
   { id: "meat",      name: "Мясо" },
@@ -172,6 +174,20 @@ export function Catalog() {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const { addItem, items } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
+
+  const inCart = items.some((i) => i.id === product.name);
+  const numericPrice = parseInt(product.price, 10);
+  const canAdd = !product.variants && !isNaN(numericPrice);
+
+  const handleAdd = () => {
+    if (!canAdd) return;
+    addItem({ id: product.name, name: product.name, price: numericPrice, unit: product.unit ?? "" });
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1500);
+  };
+
   return (
     <div className="border-2 border-border/20 bg-background/50 hover:bg-background transition-colors group cursor-default relative overflow-hidden flex flex-col h-full">
       {product.img && (
@@ -193,18 +209,41 @@ function ProductCard({ product }: { product: Product }) {
         </p>
         <div className="border-t border-border/30 pt-3 mt-auto">
           {product.variants ? (
-            <div className="flex gap-3 flex-wrap">
-              {product.variants.map((v) => (
-                <span key={v.label} className="font-sans text-sm">
-                  <span className="text-muted-foreground">{v.label}:</span>{" "}
-                  <span className="font-bold text-primary">{v.price}</span>
-                </span>
-              ))}
+            <div className="space-y-2">
+              <div className="flex gap-3 flex-wrap">
+                {product.variants.map((v) => (
+                  <span key={v.label} className="font-sans text-sm">
+                    <span className="text-muted-foreground">{v.label}:</span>{" "}
+                    <span className="font-bold text-primary">{v.price}</span>
+                  </span>
+                ))}
+              </div>
+              <p className="font-sans text-xs text-muted-foreground italic">Уточните наличие по телефону</p>
             </div>
           ) : (
-            <div className="flex items-baseline gap-1">
-              <span className="font-serif font-bold text-2xl text-primary">{product.price}</span>
-              <span className="font-sans text-sm text-muted-foreground">{product.unit}</span>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-baseline gap-1">
+                <span className="font-serif font-bold text-2xl text-primary">{product.price}</span>
+                <span className="font-sans text-sm text-muted-foreground">{product.unit}</span>
+              </div>
+              <button
+                onClick={handleAdd}
+                className={`flex items-center gap-1.5 px-3 py-2 border-2 font-sans text-sm font-bold transition-all ${
+                  justAdded
+                    ? "border-accent bg-accent text-accent-foreground"
+                    : inCart
+                    ? "border-accent/60 text-accent hover:bg-accent/10"
+                    : "border-border text-primary hover:border-accent hover:text-accent"
+                }`}
+              >
+                {justAdded ? (
+                  <><Check className="w-4 h-4" /> Добавлено</>
+                ) : inCart ? (
+                  <><ShoppingBasket className="w-4 h-4" /> В корзине</>
+                ) : (
+                  <><ShoppingBasket className="w-4 h-4" /> В корзину</>
+                )}
+              </button>
             </div>
           )}
         </div>

@@ -5,6 +5,8 @@ import { WhyUs } from "@/components/why-us";
 import { Catalog } from "@/components/catalog";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
+import { CartButton } from "@/components/cart-button";
+import { CartDrawer } from "@/components/cart-drawer";
 
 export default function Home() {
   return (
@@ -16,6 +18,8 @@ export default function Home() {
       <Catalog />
       <Contact />
       <Footer />
+      <CartButton />
+      <CartDrawer />
     </main>
   );
 }
