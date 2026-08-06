@@ -23,6 +23,7 @@ export function Footer() {
             <a href="#about" className="hover:text-accent transition-colors">Собственное производство</a>
             <a href="#catalog" className="hover:text-accent transition-colors">Каталог продукции</a>
             <a href="#contact" className="hover:text-accent transition-colors">Контакты и адрес</a>
+            <a href="/oferta" className="hover:text-accent transition-colors">Публичная оферта</a>
           </nav>
         </div>
 

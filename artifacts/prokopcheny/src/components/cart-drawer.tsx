@@ -25,6 +25,7 @@ export function CartDrawer() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
+  const [offerAccepted, setOfferAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [deliveryOpen, setDeliveryOpen] = useState(false);
@@ -66,14 +67,14 @@ export function CartDrawer() {
       if (res.ok) {
         clearCart();
         setStep("success");
-        setName(""); setPhone(""); setAddress(""); setComment("");
+        setName(""); setPhone(""); setAddress(""); setComment(""); setOfferAccepted(false);
       } else {
         setError("Не удалось отправить заказ. Позвоните нам напрямую.");
       }
     } catch {
       // API ещё не готов — всё равно показываем успех + телефон
       setStep("success");
-      setName(""); setPhone(""); setAddress(""); setComment("");
+      setName(""); setPhone(""); setAddress(""); setComment(""); setOfferAccepted(false);
     } finally {
       setLoading(false);
     }
@@ -291,6 +292,28 @@ export function CartDrawer() {
                   {error}
                 </p>
               )}
+
+              <label className="flex items-start gap-2 font-sans text-xs leading-relaxed text-muted-foreground">
+                <input
+                  required
+                  type="checkbox"
+                  checked={offerAccepted}
+                  onChange={(e) => setOfferAccepted(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-accent"
+                />
+                <span>
+                  Я принимаю условия{" "}
+                  <a
+                    href="/oferta"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-accent underline underline-offset-2 hover:text-primary"
+                  >
+                    публичной оферты
+                  </a>{" "}
+                  и согласен на обработку данных для оформления заказа.
+                </span>
+              </label>
             </div>
 
             <div className="px-6 py-4 border-t-2 border-border space-y-2">
