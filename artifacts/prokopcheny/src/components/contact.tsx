@@ -78,6 +78,35 @@ export function Contact() {
                 <a href="tel:+79009228585">Заказать сейчас</a>
               </Button>
             </div>
+
+            {/* МЫ В МАХ */}
+            <a
+              href="https://max.ru/join/QOewwatVhrUsVkCaBk1F9U16jmF5u3ZeW2V-7El9UHc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 w-full border-2 border-accent/60 hover:border-accent bg-accent/5 hover:bg-accent/10 transition-all px-5 py-3 group"
+            >
+              {/* МАХ logo mark */}
+              <span className="flex-shrink-0 w-10 h-10 rounded-full bg-accent flex items-center justify-center text-primary-foreground font-bold text-lg leading-none group-hover:scale-110 transition-transform">
+                М
+              </span>
+              <div className="flex flex-col leading-tight">
+                <span className="font-serif text-xs uppercase tracking-[0.2em] text-accent font-bold">
+                  Мы в МАХ
+                </span>
+                <span className="font-sans text-xs text-muted-foreground">
+                  Напишите нам в мессенджер
+                </span>
+              </div>
+              <svg
+                className="ml-auto w-4 h-4 text-accent opacity-60 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
 
           {/* Interactive Map */}
