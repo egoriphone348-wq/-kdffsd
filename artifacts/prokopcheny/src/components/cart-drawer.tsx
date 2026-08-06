@@ -7,10 +7,7 @@ import {
   ShoppingBasket,
   Phone,
   Truck,
-  ChevronDown,
-  MapPin,
-  CreditCard,
-  PackageCheck,
+  Store,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -28,7 +25,7 @@ export function CartDrawer() {
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [deliveryOpen, setDeliveryOpen] = useState(false);
+  const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
 
   const handleClose = () => {
     closeCart();
@@ -46,7 +43,8 @@ export function CartDrawer() {
     const orderPayload = {
       name: name.trim(),
       phone: phone.trim(),
-      address: address.trim(),
+      address: deliveryMethod === "delivery" ? address.trim() : "",
+      deliveryMethod,
       comment: comment.trim(),
       items: items.map((i) => ({
         name: i.name,
@@ -142,51 +140,34 @@ export function CartDrawer() {
 
             {items.length > 0 && (
               <div className="px-6 py-4 border-t-2 border-border space-y-3">
-                <button
-                  type="button"
-                  onClick={() => setDeliveryOpen((open) => !open)}
-                  aria-expanded={deliveryOpen}
-                  className="w-full flex items-center justify-between gap-3 border-2 border-border/50 bg-card px-3 py-3 text-left hover:border-accent transition-colors"
-                >
-                  <span className="flex items-center gap-2 font-serif font-bold text-primary">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod("delivery")}
+                    aria-pressed={deliveryMethod === "delivery"}
+                    className={`flex items-center gap-2 border-2 px-3 py-3 text-left font-serif font-bold transition-colors ${
+                      deliveryMethod === "delivery"
+                        ? "border-accent bg-accent/10 text-primary"
+                        : "border-border/50 bg-card text-muted-foreground hover:border-accent"
+                    }`}
+                  >
                     <Truck className="w-5 h-5 text-accent" />
                     Доставка
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-muted-foreground transition-transform ${
-                      deliveryOpen ? "rotate-180" : ""
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod("pickup")}
+                    aria-pressed={deliveryMethod === "pickup"}
+                    className={`flex items-center gap-2 border-2 px-3 py-3 text-left font-serif font-bold transition-colors ${
+                      deliveryMethod === "pickup"
+                        ? "border-accent bg-accent/10 text-primary"
+                        : "border-border/50 bg-card text-muted-foreground hover:border-accent"
                     }`}
-                  />
-                </button>
-
-                {deliveryOpen && (
-                  <div className="border-x-2 border-b-2 border-border/50 bg-card px-3 pb-3 -mt-3 space-y-3">
-                    <p className="font-serif text-sm font-bold text-primary">
-                      Как оформить доставку
-                    </p>
-                    <ol className="space-y-2.5 font-sans text-sm text-muted-foreground">
-                      <li className="flex gap-2">
-                        <MapPin className="w-4 h-4 shrink-0 text-accent mt-0.5" />
-                        <span>Укажите имя, телефон и адрес в форме заказа.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <Phone className="w-4 h-4 shrink-0 text-accent mt-0.5" />
-                        <span>Мы свяжемся с вами, подтвердим состав заказа и уточним способ доставки.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <CreditCard className="w-4 h-4 shrink-0 text-accent mt-0.5" />
-                        <span>После подтверждения вы сможете оплатить заказ через ЮKassa.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <PackageCheck className="w-4 h-4 shrink-0 text-accent mt-0.5" />
-                        <span>Передадим заказ в доставку и сообщим согласованные сроки.</span>
-                      </li>
-                    </ol>
-                    <p className="font-sans text-xs leading-relaxed text-muted-foreground border-t border-border/30 pt-2">
-                      Стоимость и срок доставки зависят от адреса и согласуются с вами до оплаты.
-                    </p>
-                  </div>
-                )}
+                  >
+                    <Store className="w-5 h-5 text-accent" />
+                    Самовывоз
+                  </button>
+                </div>
 
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-lg text-muted-foreground">Итого:</span>
@@ -195,7 +176,7 @@ export function CartDrawer() {
                   </span>
                 </div>
                 <p className="font-sans text-xs text-muted-foreground">
-                  * Цены за кг. Точная стоимость уточняется при подтверждении.
+                   * Цены за кг. Точная стоимость уточняется при подтверждении.
                 </p>
                 <Button
                   onClick={() => setStep("form")}
@@ -205,7 +186,7 @@ export function CartDrawer() {
                   Оформить заказ →
                 </Button>
                 <p className="text-center font-sans text-xs text-muted-foreground">
-                  Нажимая «Оформить заказ», вы перейдёте к оформлению доставки и оплате.
+                   Нажимая «Оформить заказ», вы перейдёте к оформлению заказа.
                 </p>
               </div>
             )}
@@ -259,16 +240,20 @@ export function CartDrawer() {
                 />
               </div>
 
-              {/* Адрес доставки */}
+               {/* Адрес получения */}
               <div className="space-y-1">
                 <label className="font-serif text-xs uppercase tracking-[0.15em] text-accent font-bold">
-                  Адрес доставки *
+                   {deliveryMethod === "delivery" ? "Адрес доставки *" : "Адрес самовывоза"}
                 </label>
                 <input
-                  required
+                   required={deliveryMethod === "delivery"}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Город, улица, дом, квартира"
+                   placeholder={
+                     deliveryMethod === "delivery"
+                       ? "Город, улица, дом, квартира"
+                       : "с. Кафтанчиково, ул. Звёздная, 7"
+                   }
                   className="w-full border-2 border-border bg-background px-3 py-2 font-sans text-base text-primary placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
@@ -281,7 +266,7 @@ export function CartDrawer() {
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Самовывоз / доставка / пожелания..."
+                   placeholder="Пожелания к заказу..."
                   rows={3}
                   className="w-full border-2 border-border bg-background px-3 py-2 font-sans text-base text-primary placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors resize-none"
                 />
@@ -323,7 +308,7 @@ export function CartDrawer() {
                 className="w-full font-serif text-lg tracking-wide rounded-none border-2 border-primary"
                 size="lg"
               >
-                {loading ? "Отправляем..." : "Оформить доставку"}
+                 {loading ? "Отправляем..." : "Оформить заказ"}
               </Button>
               <button
                 type="button"
@@ -342,7 +327,7 @@ export function CartDrawer() {
             <div className="text-6xl">🔥</div>
             <h3 className="font-['Ruslan_Display'] text-3xl text-primary">Заказ принят!</h3>
             <p className="font-sans text-muted-foreground leading-relaxed">
-              Мы свяжемся с вами для подтверждения заказа и уточнения деталей доставки.
+               Мы свяжемся с вами для подтверждения заказа и уточнения деталей.
             </p>
             <a
               href="tel:+79009228585"
