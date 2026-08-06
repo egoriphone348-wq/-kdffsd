@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "leaflet/dist/leaflet.css";
 
 // Coords from 2GIS: https://2gis.ru/tomsk/firm/70000001093311593
 const LAT = 56.333118;
@@ -11,7 +12,6 @@ export function InteractiveMap() {
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return;
 
-    // Dynamically import leaflet to avoid SSR issues
     import("leaflet").then((L) => {
       // Fix default icon paths (broken in bundlers)
       delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -28,19 +28,18 @@ export function InteractiveMap() {
         center: [LAT, LNG],
         zoom: 16,
         zoomControl: true,
-        scrollWheelZoom: false, // disabled by default, enabled on click
+        scrollWheelZoom: false,
       });
 
       mapRef.current = map;
 
-      // OpenStreetMap tiles — free, no API key needed
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19,
       }).addTo(map);
 
-      // Custom icon with accent colour
+      // Custom pin
       const icon = L.divIcon({
         className: "",
         html: `<div style="
@@ -69,7 +68,6 @@ export function InteractiveMap() {
         )
         .openPopup();
 
-      // Enable scroll zoom only after user interaction
       map.on("click", () => map.scrollWheelZoom.enable());
     });
 
@@ -82,16 +80,15 @@ export function InteractiveMap() {
   }, []);
 
   return (
-    <div className="relative w-full h-full min-h-[300px]">
-      {/* Leaflet CSS */}
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      />
+    /* isolation:isolate creates a new stacking context so Leaflet's
+       internal z-indexes (200–600) cannot bleed into other page sections */
+    <div
+      className="relative w-full h-full min-h-[320px]"
+      style={{ isolation: "isolate" }}
+    >
       <div
         ref={containerRef}
-        className="w-full h-full min-h-[300px] border-4 border-border"
-        style={{ zIndex: 0 }}
+        className="absolute inset-0 border-4 border-border"
       />
     </div>
   );
