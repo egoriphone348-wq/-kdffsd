@@ -1,6 +1,6 @@
-# [Project name]
+# ПроКопченый
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Сайт магазина натуральных копчёностей с каталогом товаров, корзиной и оформлением доставки.
 
 ## Run & Operate
 
@@ -30,11 +30,14 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Покупатель просматривает каталог и добавляет товары в корзину.
+- В корзине можно изменить количество, удалить товары и открыть раздел «Доставка».
+- При оформлении заказа покупатель указывает имя, телефон и адрес доставки; способ и стоимость доставки согласуются до оплаты.
+- После подтверждения заказа покупатель получает инструкции для связи с магазином.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Язык интерфейса — русский.
 
 ## Gotchas
 

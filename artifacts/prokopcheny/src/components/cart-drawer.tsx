@@ -1,5 +1,17 @@
 import { useState } from "react";
-import { Minus, Plus, Trash2, X, ShoppingBasket, Phone } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Trash2,
+  X,
+  ShoppingBasket,
+  Phone,
+  Truck,
+  ChevronDown,
+  MapPin,
+  CreditCard,
+  PackageCheck,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/cart";
@@ -11,9 +23,11 @@ export function CartDrawer() {
   const [step, setStep] = useState<Step>("cart");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [deliveryOpen, setDeliveryOpen] = useState(false);
 
   const handleClose = () => {
     closeCart();
@@ -31,6 +45,7 @@ export function CartDrawer() {
     const orderPayload = {
       name: name.trim(),
       phone: phone.trim(),
+      address: address.trim(),
       comment: comment.trim(),
       items: items.map((i) => ({
         name: i.name,
@@ -51,14 +66,14 @@ export function CartDrawer() {
       if (res.ok) {
         clearCart();
         setStep("success");
-        setName(""); setPhone(""); setComment("");
+        setName(""); setPhone(""); setAddress(""); setComment("");
       } else {
         setError("Не удалось отправить заказ. Позвоните нам напрямую.");
       }
     } catch {
       // API ещё не готов — всё равно показываем успех + телефон
       setStep("success");
-      setName(""); setPhone(""); setComment("");
+      setName(""); setPhone(""); setAddress(""); setComment("");
     } finally {
       setLoading(false);
     }
@@ -126,6 +141,52 @@ export function CartDrawer() {
 
             {items.length > 0 && (
               <div className="px-6 py-4 border-t-2 border-border space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setDeliveryOpen((open) => !open)}
+                  aria-expanded={deliveryOpen}
+                  className="w-full flex items-center justify-between gap-3 border-2 border-border/50 bg-card px-3 py-3 text-left hover:border-accent transition-colors"
+                >
+                  <span className="flex items-center gap-2 font-serif font-bold text-primary">
+                    <Truck className="w-5 h-5 text-accent" />
+                    Доставка
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-muted-foreground transition-transform ${
+                      deliveryOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {deliveryOpen && (
+                  <div className="border-x-2 border-b-2 border-border/50 bg-card px-3 pb-3 -mt-3 space-y-3">
+                    <p className="font-serif text-sm font-bold text-primary">
+                      Как оформить доставку
+                    </p>
+                    <ol className="space-y-2.5 font-sans text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <MapPin className="w-4 h-4 shrink-0 text-accent mt-0.5" />
+                        <span>Укажите имя, телефон и адрес в форме заказа.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <Phone className="w-4 h-4 shrink-0 text-accent mt-0.5" />
+                        <span>Мы свяжемся с вами, подтвердим состав заказа и уточним способ доставки.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <CreditCard className="w-4 h-4 shrink-0 text-accent mt-0.5" />
+                        <span>После подтверждения вы сможете оплатить заказ через ЮKassa.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <PackageCheck className="w-4 h-4 shrink-0 text-accent mt-0.5" />
+                        <span>Передадим заказ в доставку и сообщим согласованные сроки.</span>
+                      </li>
+                    </ol>
+                    <p className="font-sans text-xs leading-relaxed text-muted-foreground border-t border-border/30 pt-2">
+                      Стоимость и срок доставки зависят от адреса и согласуются с вами до оплаты.
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-lg text-muted-foreground">Итого:</span>
                   <span className="font-serif font-bold text-2xl text-primary">
@@ -142,6 +203,9 @@ export function CartDrawer() {
                 >
                   Оформить заказ →
                 </Button>
+                <p className="text-center font-sans text-xs text-muted-foreground">
+                  Нажимая «Оформить заказ», вы перейдёте к оформлению доставки и оплате.
+                </p>
               </div>
             )}
           </>
@@ -194,6 +258,20 @@ export function CartDrawer() {
                 />
               </div>
 
+              {/* Адрес доставки */}
+              <div className="space-y-1">
+                <label className="font-serif text-xs uppercase tracking-[0.15em] text-accent font-bold">
+                  Адрес доставки *
+                </label>
+                <input
+                  required
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Город, улица, дом, квартира"
+                  className="w-full border-2 border-border bg-background px-3 py-2 font-sans text-base text-primary placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
+                />
+              </div>
+
               {/* Комментарий */}
               <div className="space-y-1">
                 <label className="font-serif text-xs uppercase tracking-[0.15em] text-muted-foreground font-bold">
@@ -222,7 +300,7 @@ export function CartDrawer() {
                 className="w-full font-serif text-lg tracking-wide rounded-none border-2 border-primary"
                 size="lg"
               >
-                {loading ? "Отправляем..." : "Подтвердить заказ"}
+                {loading ? "Отправляем..." : "Оформить доставку"}
               </Button>
               <button
                 type="button"
