@@ -86,10 +86,6 @@ export function Contact() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 w-full border-2 border-accent/60 hover:border-accent bg-accent/5 hover:bg-accent/10 transition-all px-5 py-3 group"
             >
-              {/* МАХ logo mark */}
-              <span className="flex-shrink-0 w-10 h-10 rounded-full bg-accent flex items-center justify-center text-primary-foreground font-bold text-lg leading-none group-hover:scale-110 transition-transform">
-                М
-              </span>
               <div className="flex flex-col leading-tight">
                 <span className="font-serif text-xs uppercase tracking-[0.2em] text-accent font-bold">
                   Мы в МАХ
