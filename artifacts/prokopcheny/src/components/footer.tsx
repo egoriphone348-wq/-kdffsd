@@ -46,9 +46,14 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-[#E8D9C5]/10 flex flex-col md:flex-row justify-between items-center text-xs font-sans opacity-50">
-        <p>© {new Date().getFullYear()} #ПроКопченый. Все права защищены.</p>
-        <p className="mt-2 md:mt-0">Томская область, с. Кафтанчиково</p>
+      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-[#E8D9C5]/10 flex flex-col gap-2 text-xs font-sans opacity-50">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <p>© {new Date().getFullYear()} #ПроКопченый. Все права защищены.</p>
+          <p className="mt-1 md:mt-0">Томская область, с. Кафтанчиково</p>
+        </div>
+        <p className="text-center">
+          ИП · ИНН 701717286837
+        </p>
       </div>
     </footer>
   );
